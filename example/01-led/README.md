@@ -1,34 +1,34 @@
-# LED模块
+# LED module
 
-## **一、** **模块介绍**
+## **I. Module Introduction**
 
-LED原理及产业分类LED是发光二极体( Light EmitTIng Diode, LED)的简称，也被称作发光二极管，这种半导体组件发展以来一般是作为指示灯、显示板，但目前随着技术增加，已经能作为光源使用，它不但能够高效率地直接将电能转化为光能，而且拥有最长达数万小时～10 万小时的使用寿命，同时具备不若传统灯泡易碎，并能省电，同时拥有环保无汞、体积小、可应用在低温环境、光源具方向性、造成光害少与色域丰富等优点。
+LED Principles and Industry Classification: LED is the abbreviation for Light Emitting Diode (Light Emitting Diode, LED), also known as light-emitting diode. Since its development, this semiconductor component has generally been used as indicator lights and display panels. However, with the advancement of technology, it can now be used as a light source. It not only can directly convert electrical energy into light energy with high efficiency, but also has a lifespan of up to tens of thousands to 100,000 hours. At the same time, it is less fragile than traditional bulbs, can save electricity, is environmentally friendly without mercury, has a small size, can be applied in low-temperature environments, has directional light, causes less light pollution, and has a rich color gamut.
 
-**LED组成：**
+**LED Composition:**
 
 ![](../../media/led1.png)
 
-**发光原理：**
+**Luminous Principle:**
 
 ![](../../media/led2.png)
 
-左为正极，右为负极。当正负极形成电压差时，LED点亮。
+On the left is the positive pole, and on the right is the negative pole. When a voltage difference is formed between the positive and negative poles, the LED lights up.
 
-## 二、 连接示例
+## II. Connection Examples
 
-根据表格和图片指导，将外设与开发板一一对应连接
+According to the instructions provided in the table and pictures, connect the peripherals one by one to the development board.
 
-| 外设     | 开发板       |
-| -------- | ------------ |
-| LED（+） | 3.3V         |
-| LED（-） | GND          |
-| LED（S） | PIN4(GPIO31) |
+| peripheral | development board |
+| ---------- | ----------------- |
+| LED（+）   | 3.3V              |
+| LED（-）   | GND               |
+| LED（S）   | PIN4(GPIO31)      |
 
  
 
 ![](../../media/led3.png)
 
-## 三、 驱动代码
+## III. Driving Code
 
 ```python
 from machine import Pin

@@ -1,27 +1,27 @@
-# LED模块
+# LED Module
 
-## **一、** **模块介绍**
+## 1. Module Introduction
 
-三色 RGBLED 是**全彩发光二极管模块**，由红、绿、蓝三颗芯片封装在一起，可通过 PWM 调节亮度混合出任意颜色，广泛用于氛围灯、状态指示、交互提示、创客 DIY 场景；它能实现七彩渐变、呼吸、闪烁等效果，具备体积小、亮度高、3.3V/5V 兼容、驱动简单、寿命长等优点。
+The tricolor RGBLED is a **full-color light-emitting diode module**, which consists of three chips (red, green, and blue) packaged together. It can mix any color by adjusting brightness through PWM (Pulse Width Modulation), and is widely used in ambient lights, status indicators, interactive prompts, maker DIY scenarios. It can achieve effects such as seven-color gradient, breathing, and flashing, with advantages including small size, high brightness, 3.3V/5V compatibility, simple driving, and long service life.
 
-**发光原理：** 
+**Light-emitting Principle**:
 
-LED引脚共地，当正负极形成电压差时，LED点亮，所以高电平LED亮灯。
+The LED pins share a common ground. The LED lights up when a voltage difference is formed between the positive and negative poles, so a high level turns on the LED.
 
-## 二、 连接示例
+## 2. Connection Example
 
-根据表格和图片指导，将外设与开发板一一对应连接
+Connect the peripheral to the development board one by one according to the guidance of the table and picture.
 
-| 外设     | 开发板         |
-| -------- | -------------- |
-| LED（-） | GND            |
-| LED（R） | PIN4（GPIO31） |
-| LED（G） | PIN5（GPIO30） |
-| LED（B） | PIN6（GPIO32） |
+| Peripheral | Development Board |
+| ---------- | ----------------- |
+| LED（-）   | GND               |
+| LED（R）   | PIN4（GPIO31）    |
+| LED（G）   | PIN5（GPIO30）    |
+| LED（B）   | PIN6（GPIO32）    |
 
 ![](../../media/led4.png)
 
-## 三、 驱动代码
+## 3.Driver Code
 
 ```python
 R_PIN = 32
@@ -48,7 +48,7 @@ def set_color(red, green, blue):
 
   b.write(blue)
 
-/#排列组合展示多种灯色
+# Display multiple light colors through permutation and combination
 
 while True:
 

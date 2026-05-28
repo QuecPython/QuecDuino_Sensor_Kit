@@ -1,30 +1,30 @@
-# 按键模块
+# Key Module
 
-## **一、** **模块介绍**
+## 1. Module Introduction
 
-按键模块是**最基础的数字输入模块**，通过轻触开关实现通断控制，输出高低电平信号，用于实现**人机交互、开关控制、触发指令、计数、模式切换**等功能，是嵌入式 / 物联网项目必备模块。
+The key module is the **most basic digital input module**, which realizes on-off control through a tactile switch and outputs high/low level signals. It is essential for embedded/IoT projects, enabling functions such as **human-computer interaction, switch control, command triggering, counting, and mode switching**.
 
-**1、核心参数**
+### 1.1 Core Parameters
 
-- 类型：轻触按键（机械式）
-- 供电：3.3V–5V
-- 输出：**数字信号（高 / 低电平）**
-- 引脚：3 针（VCC、GND、SIG）
-- 默认状态：**高电平（未按下）**
-- 触发状态：**低电平（按下）**
-- 自带：上拉电阻、信号指示灯
+- Type: Tactile key (mechanical type)
+- Power supply: 3.3V – 5V
+- Output: **Digital signal (high/low level)**
+- Pins: 3 pins (VCC, GND, SIG)
+- Default state: **High level (not pressed)**
+- Trigger state: **Low level (pressed)**
+- Built-in: Pull-up resistor, signal indicator light
 
-**2、原理图**
+### 1.2 Schematic Diagram
 
 ![](../../media/key1.png)
 
-vcc和电阻都在芯片内部，当按键断开时，流过电阻的电流称为灌电流，大概几十毫安，因此此时引脚为高电平。按下时与地接通为低电平
+Both VCC and the resistor are integrated inside the chip. When the key is disconnected, the current flowing through the resistor is called sink current (about tens of milliamps), so the pin is at a high level at this time. When the key is pressed, it is connected to the ground and becomes a low level.
 
-## **二、** **连接示例**
+## 2. Connection Example
 
-根据表格和图片指导，将外设与开发板一一对应连接
+Connect the peripheral device to the development board one by one according to the table and image instructions.
 
-| **外设**     | **模块**     |
+| Peripheral   | Module       |
 | ------------ | ------------ |
 | **KEY（+）** | 3.3V         |
 | **KEY（-）** | GND          |
@@ -32,7 +32,7 @@ vcc和电阻都在芯片内部，当按键断开时，流过电阻的电流称�
 
 ![](../../media/key2.png)
 
-## **三、** **驱动代码**
+## 3.Driver Code
 
 ```python
 from machine import ExtInt
@@ -41,7 +41,7 @@ from machine import ExtInt
 
 def fun(args): 
 
-      print(“按键按下”)
+      print(“Key pressed”)
 
 extint = ExtInt(ExtInt.GPIO31,ExtInt.IRQ_FALLING,ExtInt.PULL_PU,fun)
 

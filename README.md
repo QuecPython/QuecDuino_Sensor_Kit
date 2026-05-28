@@ -40,6 +40,7 @@ QuecDuino入门级传感器实验套件，是专为初学者、创客及教育�
 | 17   | [激光发射模块(KY-008)](example/17-激光发射器(KY-008)/README.md) |
 | 18   | [水银开关模块(KY-017)](example/18-水银开关(KY-017)/README.md) |
 | 19   | [温湿度传感器(AHT20)](example/19-温湿度传感器(AHT20)/README.md) |
+| 20   | [模拟压电陶瓷振动传感器)](example/20 - Simulated Piezoelectric Ceramic Vibration Sensor/README.md) |
 
 # EG800Z Duino 开发板固件烧录&使用指导
 

@@ -1,26 +1,26 @@
-# 水位检测模块
+# Water Level Detection Module
 
-## **一、** **模块介绍**
+## 1. Module Introduction
 
-水位监测模块是**电阻式液体检测传感器**，用于检测水位高度、有无水、漏水报警等场景；通过导电探针检测液面变化，输出模拟，具备**响应快、体积小、3.3V兼容、直接接 ADC、使用寿命长**等优点。
+The water level monitoring module is a **resistive liquid detection sensor**, which is used in scenarios such as detecting water level height, presence or absence of water, and water leakage alarm; it detects liquid level changes through conductive probes and outputs analog signals, with advantages such as **fast response, small size, 3.3V compatibility, direct connection to ADC, and long service life**.
 
-**工作原理：**
+**Working Principle:**
 
-Water Sensor水位传感器能够监测水位。该模块主要是利用三极管的电流放大原理：当液位高度使三极管的基极与电源正极导通的时候，在三极管的基极和发射极之间就会产生一定大小的电流，此时在三极管的集电极和发射极之间就会产生一个一定放大倍数的电流，该电流经过发射极的电阻产生特点电压，被AD转换器采集。
+The Water Sensor can monitor the water level. This module mainly utilizes the current amplification principle of transistors: when the liquid level height makes the base of the transistor conduct with the positive pole of the power supply, a certain amount of current is generated between the base and emitter of the transistor, and at this time, a current with a certain amplification factor is generated between the collector and emitter of the transistor. This current generates a characteristic voltage through the resistor at the emitter, which is collected by the AD converter.
 
-## 二、 连接示例
+## 2. Connection Example
 
-根据表格和图片指导，将外设与开发板一一对应连接
+Connect the peripherals to the development board one by one according to the table and picture instructions
 
-| 外设      | 开发板     |
-| --------- | ---------- |
-| 模块（+） | 3.3V       |
-| 模块（-） | GND        |
-| 模块（S） | A1（ADC1） |
+| Peripheral | Development Board |
+| ---------- | ----------------- |
+| Module (+) | 3.3V              |
+| Module (-) | GND               |
+| Module (S) | A1（ADC1）        |
 
 ![](../../media/water1.png)
 
-## 三、 驱动代码
+## 3.Driver Code
 
 ```python
 def fun():

@@ -1,3 +1,5 @@
+
+
 # 麦克风模块
 
 ## **一、** **模块介绍**
@@ -14,7 +16,7 @@
 | MIC（-） | GND      |
 | MIC（S） | A1(ADC1) |
 
-![](../../media/mic1.png) 
+![](C:/Users/Aaron.chen/Desktop/QuecDuion套件相关资料/QuecDuino_Sensor_Kit/media/mic1.png) 
 
 ## 三、 驱动代码
 
