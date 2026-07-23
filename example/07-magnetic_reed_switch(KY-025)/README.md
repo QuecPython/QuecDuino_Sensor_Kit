@@ -53,12 +53,12 @@ class MagneticReedSwitch(object):
     Args:
         adc_channel: ADC 通道，默认 ADC1
         led_pin:     LED 指示 GPIO 引脚，默认 GPIO31，传 None 禁用
-        threshold:   磁场检测阈值，默认 100
+        threshold:   磁场检测阈值，低于此值判定为检测到磁场，默认 900
         led_on_ms:   LED 点亮持续时间 ms，默认 500（非阻塞）
     """
 
     def __init__(self, adc_channel=None, led_pin=Pin.GPIO31,
-                 threshold=100, led_on_ms=500):
+                 threshold=900, led_on_ms=500):
         self._threshold = threshold
         self._led_on_ms = led_on_ms
         self._led = None
@@ -102,7 +102,7 @@ class MagneticReedSwitch(object):
         Returns:
             bool: True 表示检测到磁场
         """
-        return self._last_value > self._threshold
+        return self._last_value < self._threshold
 
     def _led_on(self):
         if self._led is not None:
@@ -119,8 +119,10 @@ class MagneticReedSwitch(object):
         """后台监控循环，非阻塞采样。"""
         while self._is_running:
             value = self.read_value()
+            detected = value < self._threshold
+            print("ADC: {} | 状态: {}".format(value, "检测到磁场" if detected else "无磁场"))
 
-            if value > self._threshold:
+            if detected:
                 self._led_on()
                 if self._callback:
                     self._callback(value)
@@ -145,7 +147,7 @@ if __name__ == '__main__':
     def on_magnet(value):
         print("检测到磁场! ADC = {}".format(value))
 
-    sensor = MagneticReedSwitch(led_pin=Pin.GPIO31, threshold=100)
+    sensor = MagneticReedSwitch(led_pin=Pin.GPIO31, threshold=900)
     sensor.set_callback(on_magnet)
     sensor.start()
 

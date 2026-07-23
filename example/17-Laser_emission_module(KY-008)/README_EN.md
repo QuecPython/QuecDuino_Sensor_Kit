@@ -84,7 +84,8 @@ class LaserEmitter(object):
 
 if __name__ == '__main__':
     laser = LaserEmitter(pin=Pin.GPIO31, active_level=1)
-    laser.blink(interval=0.5, times=3)
-    laser.off()
+    laser.on()
+    while True:
+        utime.sleep_ms(1000)
 ```
 

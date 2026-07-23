@@ -35,8 +35,8 @@ class ObstacleSensor(object):
     """红外避障传感器类（KY-032），支持轮询和中断两种检测模式。
 
     传感器输出逻辑：
-        - 无障碍物时 OUT 输出高电平 (1)
-        - 检测到障碍物时 OUT 输出低电平 (0)
+        - 无障碍物时 OUT 输出低电平 (0)
+        - 检测到障碍物时 OUT 输出高电平 (1)
 
     典型用法:
         sensor = ObstacleSensor(pin=Pin.GPIO31)
@@ -48,7 +48,11 @@ class ObstacleSensor(object):
         pull: 上下拉配置，默认上拉 (Pin.PULL_PU)
     """
 
-    def __init__(self, pin=Pin.GPIO31, pull=Pin.PULL_PU):
+    def __init__(self, pin=None, pull=None):
+        if pin is None:
+            pin = Pin.GPIO31
+        if pull is None:
+            pull = Pin.PULL_PU
         self._gpio = Pin(pin, Pin.IN, pull)
         self._extint = None
         self._obstacle_flag = False
@@ -67,7 +71,7 @@ class ObstacleSensor(object):
         """读取当前传感器状态。
 
         Returns:
-            int: 0=有障碍物, 1=无障碍物
+            int: 0=无障碍物, 1=有障碍物
         """
         return self._gpio.read()
 
@@ -77,11 +81,11 @@ class ObstacleSensor(object):
         Returns:
             bool: True 表示检测到障碍物
         """
-        return self.read_state() == 0
+        return self.read_state() == 1
 
     def _irq_handler(self, args):
         """中断回调，障碍物出现时置位标志。"""
-        if self._gpio.read() == 0:
+        if self._gpio.read() == 1:
             self._obstacle_flag = True
 
     @property
@@ -137,7 +141,9 @@ class ObstacleSensor(object):
         """
         print("[ObstacleSensor] 轮询模式启动")
         while True:
-            if self.is_obstacle():
+            if self._gpio.read() == 0:
+                print("无障碍物")
+            else:
                 self._trigger_count += 1
                 print("检测到障碍物")
                 if self._callback:
@@ -150,7 +156,7 @@ class ObstacleSensor(object):
         Args:
             interval_ms: 主循环检查间隔 ms，默认 200
         """
-        self._extint = ExtInt(self._gpio, ExtInt.IRQ_FALLING, Pin.PULL_PU, self._irq_handler)
+        self._extint = ExtInt(self._gpio, ExtInt.IRQ_FALLING, ExtInt.PULL_PU, self._irq_handler)
         self._extint.enable()
         print("[ObstacleSensor] 中断模式启动")
         while True:

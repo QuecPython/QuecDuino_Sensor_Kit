@@ -20,19 +20,19 @@ class MagneticReedSwitch(object):
     应用场景：门窗防盗、智能计数、位置限位检测、无触点开关等。
 
     典型用法:
-        sensor = MagneticReedSwitch(led_pin=Pin.GPIO31, threshold=100)
+        sensor = MagneticReedSwitch(led_pin=Pin.GPIO31, threshold=900)
         sensor.set_callback(lambda val: print("磁场!", val))
         sensor.start()
 
     Args:
         adc_channel: ADC 通道，默认 ADC1
         led_pin:     LED 指示 GPIO 引脚，默认 GPIO31，传 None 禁用
-        threshold:   磁场检测阈值，默认 100
+        threshold:   磁场检测阈值，低于此值判定为检测到磁场，默认 900
         led_on_ms:   LED 点亮持续时间 ms，默认 500（非阻塞）
     """
 
     def __init__(self, adc_channel=None, led_pin=Pin.GPIO31,
-                 threshold=100, led_on_ms=500):
+                 threshold=900, led_on_ms=500):
         self._threshold = threshold
         self._led_on_ms = led_on_ms
         self._led = None
@@ -82,7 +82,7 @@ class MagneticReedSwitch(object):
         Returns:
             bool: True 表示检测到磁场
         """
-        return self._last_value > self._threshold
+        return self._last_value < self._threshold
 
     # ---- LED（非阻塞） ----
 
@@ -104,7 +104,7 @@ class MagneticReedSwitch(object):
         while self._is_running:
             value = self.read_value()
 
-            if value > self._threshold:
+            if value < self._threshold:
                 self._led_on()
                 if self._callback:
                     self._callback(value)
@@ -130,7 +130,7 @@ if __name__ == '__main__':
     def on_magnet(value):
         print("检测到磁场! ADC = {}".format(value))
 
-    sensor = MagneticReedSwitch(led_pin=Pin.GPIO31, threshold=100)
+    sensor = MagneticReedSwitch(led_pin=Pin.GPIO31, threshold=900)
     sensor.set_callback(on_magnet)
     sensor.start()
 

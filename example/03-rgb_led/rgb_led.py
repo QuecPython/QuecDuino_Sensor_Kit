@@ -44,7 +44,7 @@ class RGBLED(object):
 
     def __init__(self, red_pin, green_pin, blue_pin, active_level=0):
         self._active = active_level
-        self._inactive = 1 if active_level else 0
+        self._inactive = 0 if active_level else 1
         self.red = red_pin
         self.green = green_pin
         self.blue = blue_pin

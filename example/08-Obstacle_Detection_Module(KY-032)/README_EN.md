@@ -35,8 +35,8 @@ class ObstacleSensor(object):
     """Infrared obstacle avoidance sensor class (KY-032), supports polling and interrupt modes.
 
     Sensor output logic:
-        - No obstacle: OUT outputs high level (1)
-        - Obstacle detected: OUT outputs low level (0)
+        - No obstacle: OUT outputs low level (0)
+        - Obstacle detected: OUT outputs high level (1)
 
     Example:
         sensor = ObstacleSensor(pin=Pin.GPIO31)
@@ -48,7 +48,11 @@ class ObstacleSensor(object):
         pull: pull-up/down config, default pull-up (Pin.PULL_PU)
     """
 
-    def __init__(self, pin=Pin.GPIO31, pull=Pin.PULL_PU):
+    def __init__(self, pin=None, pull=None):
+        if pin is None:
+            pin = Pin.GPIO31
+        if pull is None:
+            pull = Pin.PULL_PU
         self._gpio = Pin(pin, Pin.IN, pull)
         self._extint = None
         self._obstacle_flag = False
@@ -67,7 +71,7 @@ class ObstacleSensor(object):
         """Read current sensor state.
 
         Returns:
-            int: 0=obstacle, 1=clear
+            int: 0=clear, 1=obstacle
         """
         return self._gpio.read()
 
@@ -77,11 +81,11 @@ class ObstacleSensor(object):
         Returns:
             bool: True if obstacle detected
         """
-        return self.read_state() == 0
+        return self.read_state() == 1
 
     def _irq_handler(self, args):
         """Interrupt callback, sets flag when obstacle detected."""
-        if self._gpio.read() == 0:
+        if self._gpio.read() == 1:
             self._obstacle_flag = True
 
     @property
@@ -137,7 +141,9 @@ class ObstacleSensor(object):
         """
         print("[ObstacleSensor] Polling mode started")
         while True:
-            if self.is_obstacle():
+            if self._gpio.read() == 0:
+                print("No obstacle")
+            else:
                 self._trigger_count += 1
                 print("Obstacle detected")
                 if self._callback:
@@ -150,7 +156,7 @@ class ObstacleSensor(object):
         Args:
             interval_ms: check interval in ms, default 200
         """
-        self._extint = ExtInt(self._gpio, ExtInt.IRQ_FALLING, Pin.PULL_PU, self._irq_handler)
+        self._extint = ExtInt(self._gpio, ExtInt.IRQ_FALLING, ExtInt.PULL_PU, self._irq_handler)
         self._extint.enable()
         print("[ObstacleSensor] Interrupt mode started")
         while True:

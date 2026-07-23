@@ -51,19 +51,19 @@ class MagneticReedSwitch(object):
     """Magnetic reed switch sensor class (ADC mode), reads magnetic field intensity via analog signal.
 
     Example:
-        sensor = MagneticReedSwitch(led_pin=Pin.GPIO31, threshold=100)
+        sensor = MagneticReedSwitch(led_pin=Pin.GPIO31, threshold=900)
         sensor.set_callback(lambda val: print("magnet!", val))
         sensor.start()
 
     Args:
         adc_channel: ADC channel, default ADC1
         led_pin:     LED indicator GPIO pin, default GPIO31, pass None to disable
-        threshold:   magnetic field detection threshold, default 100
+        threshold:   magnetic field detection threshold, below this value = detected, default 900
         led_on_ms:   LED on duration in ms, default 500 (non-blocking)
     """
 
     def __init__(self, adc_channel=None, led_pin=Pin.GPIO31,
-                 threshold=100, led_on_ms=500):
+                 threshold=900, led_on_ms=500):
         self._threshold = threshold
         self._led_on_ms = led_on_ms
         self._led = None
@@ -107,7 +107,7 @@ class MagneticReedSwitch(object):
         Returns:
             bool: True if detected
         """
-        return self._last_value > self._threshold
+        return self._last_value < self._threshold
 
     def _led_on(self):
         if self._led is not None:
@@ -124,8 +124,10 @@ class MagneticReedSwitch(object):
         """Background monitoring loop, non-blocking sampling."""
         while self._is_running:
             value = self.read_value()
+            detected = value < self._threshold
+            print("ADC: {} | Status: {}".format(value, "Magnetic field detected" if detected else "No magnetic field"))
 
-            if value > self._threshold:
+            if detected:
                 self._led_on()
                 if self._callback:
                     self._callback(value)
@@ -150,7 +152,7 @@ if __name__ == '__main__':
     def on_magnet(value):
         print("Magnetic field detected! ADC = {}".format(value))
 
-    sensor = MagneticReedSwitch(led_pin=Pin.GPIO31, threshold=100)
+    sensor = MagneticReedSwitch(led_pin=Pin.GPIO31, threshold=900)
     sensor.set_callback(on_magnet)
     sensor.start()
 
